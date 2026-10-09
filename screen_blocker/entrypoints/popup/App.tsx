@@ -3,8 +3,6 @@ import flowerBoyThingLogo from '@/assets/uhhhh.svg';
 import './App.css';
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <>
       <div>
@@ -15,17 +13,10 @@ function App() {
       </div>
       <h1>Bloom</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          ball count is {count}
+        <button className="cont-to-blocked">
+          Continue To Site
         </button>
-        <button onClick={() => setCount(0)}>Reset</button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
       </div>
-      <p className="read-the-docs">
-        Click on the balls logos to learn more
-      </p>
     </>
   );
 }

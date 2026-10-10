@@ -1,0 +1,70 @@
+.blocked-sites {
+  width: 360px;
+  padding: 24px;
+  color: #1f4d3a;
+  background: #f6f4ec;
+  font-family: system-ui, sans-serif;
+}
+
+.blocked-sites h1 {
+  margin: 0;
+  font-size: 28px;
+}
+
+.blocked-sites p {
+  margin: 4px 0 20px;
+  color: #657068;
+}
+
+.site-list,
+.add-site {
+  padding: 16px;
+  background: white;
+  border: 1px solid #dedbd0;
+  border-radius: 14px;
+}
+
+.site-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 0;
+  border-bottom: 1px solid #eeeae0;
+}
+
+.site-row:last-child {
+  border-bottom: 0;
+}
+
+.site-row span {
+  flex: 1;
+  font-weight: 600;
+}
+
+.blocked-sites button {
+  border: 0;
+  border-radius: 8px;
+  padding: 7px 10px;
+  color: white;
+  background: #3f7a5a;
+  cursor: pointer;
+}
+
+.blocked-sites button.remove {
+  color: #9b4d2b;
+  background: #f8e7dc;
+}
+
+.add-site {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.add-site input {
+  min-width: 0;
+  flex: 1;
+  padding: 9px;
+  border: 1px solid #d7d2c6;
+  border-radius: 8px;
+}

@@ -1,4 +1,4 @@
-# Bloom — Internal Development Notes
+# Bloom - Internal Development Notes
 
 This folder is the main Chrome extension project. It uses WXT, React, and TypeScript.
 

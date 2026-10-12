@@ -1,14 +1,22 @@
+
 import React from 'react';
 import BloomLogo from '@/assets/uhhhh.svg';
-import './ScreenBlocker.css'
+import './ScreenBlocker.css';
 
-const ScreenBlocker = () => {
+interface ScreenBlockerProps {
+  onContinue: () => void;
+}
+
+const ScreenBlocker = ({ onContinue }: ScreenBlockerProps) => {
   return (
-    <div id = "screen-blocker">
+    <div id="screen-blocker">
       <div>
-        <img src={BloomLogo} alt="Bloom Logo"/>
+        <img src={BloomLogo} alt="Bloom Logo" />
       </div>
       <h1>Bloom Screen Blocker</h1>
+      <button id="continue-button" onClick={onContinue}>
+        Continue to Social Media
+      </button>
     </div>
   );
 };

@@ -41,6 +41,12 @@
   font-weight: 600;
 }
 
+.site-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
 .blocked-sites button {
   border: 0;
   border-radius: 8px;

@@ -2,11 +2,10 @@ import { useEffect, useState } from 'react';
 import { getBlockedSites, saveBlockedSites, type BlockedSite } from './storage';
 import './BlockedSites.css';
 
-function formatSiteName(domain: string) {
-  return domain
-    .split('.')
-    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join('.');
+function getSiteIcon(domain: string) {
+  const name = domain.split('.')[0] ?? '';
+  const supportedSites = ['instagram', 'tiktok', 'reddit', 'youtube'];
+  return supportedSites.includes(name) ? name : 'site';
 }
 
 function BlockedSites() {
@@ -52,7 +51,12 @@ function BlockedSites() {
       <section className="site-list">
         {sites.map((site) => (
           <div className="site-row" key={site.domain}>
-            <span>{formatSiteName(site.domain)}</span>
+            <img
+              className="site-icon"
+              src={`/social/${getSiteIcon(site.domain)}.svg`}
+              alt=""
+            />
+            <span>{site.domain}</span>
             <button onClick={() => toggleSite(site.domain)}>
               {site.enabled ? 'On' : 'Off'}
             </button>

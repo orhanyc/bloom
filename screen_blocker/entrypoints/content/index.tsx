@@ -19,6 +19,16 @@ export default defineContentScript({
       name: 'bloom-screen-blocker',
       position: 'modal',
       zIndex: 2147483647,
+      css: `
+        :host {
+          position: fixed !important;
+          inset: 0 !important;
+          z-index: 2147483647 !important;
+          display: block !important;
+          width: 100vw !important;
+          height: 100vh !important;
+        }
+      `,
 
       onMount: (container) => {
         const root = ReactDOM.createRoot(container);

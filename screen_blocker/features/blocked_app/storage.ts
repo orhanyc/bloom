@@ -4,10 +4,7 @@ export type BlockedSite = {
 };
 
 export const DEFAULT_SITES: BlockedSite[] = [
-  { domain: 'instagram.com', enabled: true },
-  { domain: 'tiktok.com', enabled: true },
-  { domain: 'reddit.com', enabled: false },
-  { domain: 'youtube.com', enabled: true },
+  
 ];
 
 // Shared storage keeps the popup and blocker on the same settings.

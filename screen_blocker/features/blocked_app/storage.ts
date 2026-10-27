@@ -4,11 +4,13 @@ export type BlockedSite = {
 };
 
 export const DEFAULT_SITES: BlockedSite[] = [
-  { domain: 'instagram.com', enabled: true },
-  { domain: 'tiktok.com', enabled: true },
+  { domain: 'instagram.com', enabled: false },
+  { domain: 'tiktok.com', enabled: false },
   { domain: 'reddit.com', enabled: false },
-  { domain: 'youtube.com', enabled: true },
+  { domain: 'youtube.com', enabled: false },
 ];
+
+export const BLOCKED_SITES: string[] = ['youtube.com'];
 
 // Shared storage keeps the popup and blocker on the same settings.
 export async function getBlockedSites(): Promise<BlockedSite[]> {

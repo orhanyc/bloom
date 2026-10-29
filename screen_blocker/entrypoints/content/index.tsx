@@ -3,18 +3,24 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import ScreenBlocker from './ScreenBlocker';
 import './ScreenBlocker.css';
+import {
+  domainMatches,
+  getBlockedSites,
+  normalizeDomain,
+  type BlockedSite,
+} from '../../features/blocked_app/storage';
 
-const SITE = 'youtube.com';
 const BYPASS_MINUTES = 5;
 
 export default defineContentScript({
-  //matches = the blocked sites
-  matches: ['*://*.youtube.com/*'],
+  matches: ['*://*/*'],
   cssInjectionMode: 'ui',
 
   async main(ctx) {
+    const site = normalizeDomain(location.hostname);
     let bypassTimer: ReturnType<typeof setTimeout> | undefined;
     let blocked = false;
+    let siteEnabled = false;
 
     //creates the root cover for the screen
     const ui = await createShadowRootUi(ctx, {
@@ -26,10 +32,10 @@ export default defineContentScript({
         :host {
           position: fixed !important;
           inset: 0 !important;
-          z-index: 2147483647 !important;
-          display: block !important;
           width: 100vw !important;
           height: 100vh !important;
+          z-index: 2147483647 !important;
+          display: block !important;
         }
       `,
 
@@ -49,7 +55,7 @@ export default defineContentScript({
     });
 
     function block() {
-      if (blocked) return;
+      if (!siteEnabled || blocked) return;
 
       blocked = true;
 
@@ -92,7 +98,7 @@ export default defineContentScript({
       await browser.storage.local.set({
         bypasses: {
           ...(bypasses as Record<string, number>),
-          [SITE]: expiresAt,
+          [site]: expiresAt,
         },
         bypassCount: (bypassCount as number) + 1,
       });
@@ -111,46 +117,55 @@ export default defineContentScript({
 
     document.addEventListener('play', handlePlay, true);
 
-    const handleStorageChange = (
+    const handleStorageChange = async (
       changes: Record<
         string,
         { newValue?: unknown; oldValue?: unknown }
       >,
       area: string
     ) => {
-      if (area !== 'local' || !changes.bypasses) return;
+      if (area !== 'local') return;
 
-      const bypasses = changes.bypasses.newValue as
-        | Record<string, number>
-        | undefined;
+      if (changes.blockedSites) {
+        await refreshBlockState(changes.blockedSites.newValue as BlockedSite[] | undefined);
+        return;
+      }
 
-      const expiresAt = bypasses?.[SITE] ?? 0;
-
-      if (expiresAt > Date.now()) {
-        allowUntil(expiresAt);
-      } else {
-        if (bypassTimer) {
-          clearTimeout(bypassTimer);
-          bypassTimer = undefined;
-        }
-
-        block();
+      if (changes.bypasses) {
+        await refreshBlockState();
       }
     };
 
     browser.storage.onChanged.addListener(handleStorageChange);
 
-    const { bypasses = {} } =
-      await browser.storage.local.get('bypasses');
+    async function refreshBlockState(sites?: BlockedSite[]) {
+      const blockedSites = sites ?? (await getBlockedSites());
+      siteEnabled = blockedSites.some(
+        (blockedSite) =>
+          blockedSite.enabled && domainMatches(site, blockedSite.domain),
+      );
 
-    const expiresAt =
-      (bypasses as Record<string, number>)[SITE] ?? 0;
+      if (!siteEnabled) {
+        if (bypassTimer) {
+          clearTimeout(bypassTimer);
+          bypassTimer = undefined;
+        }
+        blocked = false;
+        ui.remove();
+        return;
+      }
 
-    if (expiresAt > Date.now()) {
-      allowUntil(expiresAt);
-    } else {
-      block();
+      const { bypasses = {} } = await browser.storage.local.get('bypasses');
+      const expiresAt = (bypasses as Record<string, number>)[site] ?? 0;
+
+      if (expiresAt > Date.now()) {
+        allowUntil(expiresAt);
+      } else {
+        block();
+      }
     }
+
+    await refreshBlockState();
 
     ctx.onInvalidated(() => {
       if (bypassTimer) {

@@ -18,7 +18,7 @@ export default defineContentScript({
     const ui = await createShadowRootUi(ctx, {
       name: 'bloom-screen-blocker',
       position: 'modal',
-      zIndex: 2147483647,
+      //zIndex: 2147483647,
       css: `
         :host {
           position: fixed !important;

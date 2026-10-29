@@ -33,6 +33,7 @@ export default defineContentScript({
           width: 100vw !important;
           height: 100vh !important;
           z-index: 2147483647 !important;
+          display: block !important;
         }
       `,
 

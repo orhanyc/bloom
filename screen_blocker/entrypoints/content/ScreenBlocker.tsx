@@ -7,6 +7,7 @@ interface ScreenBlockerProps {
   onContinue: () => void;
 }
 
+//Creates screen blocker
 const ScreenBlocker = ({ onContinue }: ScreenBlockerProps) => {
   return (
     <div id="screen-blocker">

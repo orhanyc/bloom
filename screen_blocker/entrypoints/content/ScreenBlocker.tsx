@@ -1,6 +1,6 @@
 
 import React from 'react';
-import BloomLogo from '@/assets/uhhhh.svg';
+import BloomLogo from '@/assets/bloom-icon.svg';
 import './ScreenBlocker.css';
 
 interface ScreenBlockerProps {

@@ -13,7 +13,8 @@ import {
 const BYPASS_MINUTES = 5;
 
 export default defineContentScript({
-  matches: ['*://*/*'],
+  //matches = the blocked sites
+  matches: ['*://*.youtube.com/*'],
   cssInjectionMode: 'ui',
 
   async main(ctx) {
@@ -22,10 +23,12 @@ export default defineContentScript({
     let blocked = false;
     let siteEnabled = false;
 
+    //creates the root cover for the screen
     const ui = await createShadowRootUi(ctx, {
       name: 'bloom-screen-blocker',
+      //position allows blocker to block screen dynamically
       position: 'modal',
-      zIndex: 2147483647,
+      //forces the blocker to be the very top priority on the website
       css: `
         :host {
           position: fixed !important;
@@ -37,18 +40,16 @@ export default defineContentScript({
         }
       `,
 
+      //Adds the screenblocker to webpage when .mount() is called
       onMount: (container) => {
         const root = ReactDOM.createRoot(container);
-
         root.render(
-          <React.StrictMode>
-            <ScreenBlocker onContinue={handleContinue} />
-          </React.StrictMode>
+          <ScreenBlocker onContinue={handleContinue} />
         );
-
         return root;
       },
 
+      //Removes the screenblocker from webpage when .unmount() is called
       onRemove: (root) => {
         root?.unmount();
       },

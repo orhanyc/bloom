@@ -7,6 +7,7 @@ export async function getBypassExpiry(site: string): Promise<number> {
   return (bypasses as Bypasses)[site] ?? 0;
 }
 
+//Unlocks the site temporarily and records the unblock
 export async function startBypass(site: string): Promise<number> {
   const { bypasses = {}, bypassCount = 0 } = await browser.storage.local.get([
     'bypasses',
@@ -17,6 +18,7 @@ export async function startBypass(site: string): Promise<number> {
 
   await browser.storage.local.set({
     bypasses: { ...(bypasses as Bypasses), [site]: expiresAt },
+    //Total number of times the user has chosen to continue
     bypassCount: (bypassCount as number) + 1,
   });
 

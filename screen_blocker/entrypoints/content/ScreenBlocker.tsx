@@ -1,6 +1,6 @@
-
 import React from 'react';
 import BloomLogo from '@/assets/bloom-icon.svg';
+import ContinueButton from '../../features/social_media/ContinueButton';
 import './ScreenBlocker.css';
 
 interface ScreenBlockerProps {
@@ -15,9 +15,7 @@ const ScreenBlocker = ({ onContinue }: ScreenBlockerProps) => {
         <img src={BloomLogo} alt="Bloom Logo" />
       </div>
       <h1>Bloom Screen Blocker</h1>
-      <button id="continue-button" onClick={onContinue}>
-        Continue to Social Media
-      </button>
+      <ContinueButton onContinue={onContinue} />
     </div>
   );
 };

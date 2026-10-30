@@ -1,4 +1,3 @@
-
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import ScreenBlocker from './ScreenBlocker';
@@ -9,8 +8,10 @@ import {
   normalizeDomain,
   type BlockedSite,
 } from '../../features/blocked_app/storage';
-
-const BYPASS_MINUTES = 5;
+import {
+  getBypassExpiry,
+  startBypass,
+} from '../../features/social_media/bypass';
 
 export default defineContentScript({
   //matches = the blocked sites
@@ -88,23 +89,7 @@ export default defineContentScript({
     }
 
     async function handleContinue() {
-      const { bypasses = {}, bypassCount = 0 } =
-        await browser.storage.local.get([
-          'bypasses',
-          'bypassCount',
-        ]);
-
-      const expiresAt = Date.now() + BYPASS_MINUTES * 60 * 1000;
-
-      await browser.storage.local.set({
-        bypasses: {
-          ...(bypasses as Record<string, number>),
-          [site]: expiresAt,
-        },
-        bypassCount: (bypassCount as number) + 1,
-      });
-
-      allowUntil(expiresAt);
+      allowUntil(await startBypass(site));
     }
 
     const handlePlay = (event: Event) => {
@@ -156,8 +141,7 @@ export default defineContentScript({
         return;
       }
 
-      const { bypasses = {} } = await browser.storage.local.get('bypasses');
-      const expiresAt = (bypasses as Record<string, number>)[site] ?? 0;
+      const expiresAt = await getBypassExpiry(site);
 
       if (expiresAt > Date.now()) {
         allowUntil(expiresAt);

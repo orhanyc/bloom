@@ -1,6 +1,20 @@
 
+.popup {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.popup-content {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
 .popup-tabs {
   display: flex;
+  flex-shrink: 0;
   width: 100%;
   gap: 8px;
   padding: 12px 24px 0;

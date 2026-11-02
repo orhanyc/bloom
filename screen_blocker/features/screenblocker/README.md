@@ -2,6 +2,7 @@
 
 Owner: Luke
 
-Branch: `screenblocker`
+Branch: screenblocker
 
-Status: Prototype exists in `entrypoints/content/`.
+Status: Activity prompt, focus timer, and completion confirmation are implemented in entrypoints/content/.
+

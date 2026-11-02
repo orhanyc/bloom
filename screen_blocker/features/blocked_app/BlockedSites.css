@@ -1,6 +1,7 @@
 .blocked-sites {
-  width: 360px;
-  padding: 24px;
+  width: 100%;
+  padding: 24px 24px 8px;
+  box-sizing: border-box;
   color: #1f4d3a;
   background: #f6f4ec;
   font-family: system-ui, sans-serif;

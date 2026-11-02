@@ -2,6 +2,6 @@
 
 Owner: Divyanshu
 
-Branch: `social_media`
+Branch: social_media
 
-Status: Placeholder. This feature should temporarily unlock the selected site and record the unblock.
+Status: Continue button, five-minute site bypass, automatic expiry, and total unblock count are implemented.

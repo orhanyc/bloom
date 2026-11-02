@@ -14,12 +14,36 @@ import {
 } from '../../features/social_media/bypass';
 
 export default defineContentScript({
-  //matches = the blocked sites
-  matches: ['*://*.youtube.com/*'],
+  matches: ['*://*/*'],
+  runAt: 'document_start',
   cssInjectionMode: 'ui',
 
   async main(ctx) {
     const site = normalizeDomain(location.hostname);
+    const pageRoot = document.documentElement;
+    const pageCover = document.createElement('style');
+    pageCover.textContent = `
+      html[data-bloom-covered] {
+        background: #f6f4ec !important;
+      }
+      html[data-bloom-covered] > body {
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+      }
+    `;
+    pageRoot.append(pageCover);
+    pageRoot.setAttribute('data-bloom-covered', '');
+
+    function revealPage() {
+      pageRoot.removeAttribute('data-bloom-covered');
+    }
+
+    ctx.onInvalidated(() => {
+      revealPage();
+      pageCover.remove();
+    });
+
     let bypassTimer: ReturnType<typeof setTimeout> | undefined;
     let blocked = false;
     let siteEnabled = false;
@@ -27,6 +51,7 @@ export default defineContentScript({
     //creates the root cover for the screen
     const ui = await createShadowRootUi(ctx, {
       name: 'bloom-screen-blocker',
+      anchor: 'html',
       //position allows blocker to block screen dynamically
       position: 'modal',
       //forces the blocker to be the very top priority on the website
@@ -45,7 +70,7 @@ export default defineContentScript({
       onMount: (container) => {
         const root = ReactDOM.createRoot(container);
         root.render(
-          <ScreenBlocker onContinue={handleContinue} />
+          <ScreenBlocker site={site} onContinue={handleContinue} />
         );
         return root;
       },
@@ -54,11 +79,16 @@ export default defineContentScript({
       onRemove: (root) => {
         root?.unmount();
       },
+    }).catch((error) => {
+      revealPage();
+      pageCover.remove();
+      throw error;
     });
 
     function block() {
       if (!siteEnabled || blocked) return;
 
+      pageRoot.setAttribute('data-bloom-covered', '');
       blocked = true;
 
       document.querySelectorAll('video').forEach((video) => {
@@ -71,6 +101,7 @@ export default defineContentScript({
     function allowUntil(expiresAt: number) {
       blocked = false;
       ui.remove();
+      revealPage();
 
       if (bypassTimer) {
         clearTimeout(bypassTimer);
@@ -138,9 +169,11 @@ export default defineContentScript({
         }
         blocked = false;
         ui.remove();
+        revealPage();
         return;
       }
 
+      pageRoot.setAttribute('data-bloom-covered', '');
       const expiresAt = await getBypassExpiry(site);
 
       if (expiresAt > Date.now()) {
@@ -150,7 +183,10 @@ export default defineContentScript({
       }
     }
 
-    await refreshBlockState();
+    await refreshBlockState().catch((error) => {
+      revealPage();
+      throw error;
+    });
 
     ctx.onInvalidated(() => {
       if (bypassTimer) {

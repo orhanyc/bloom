@@ -7,7 +7,7 @@ function App() {
   const [activeTab, setActiveTab] = useState<'blocked' | 'garden'>('blocked');
 
   return (
-    <div>
+    <div className="popup">
       <nav className="popup-tabs">
         <button
           className={activeTab === 'blocked' ? 'active' : ''}
@@ -24,7 +24,9 @@ function App() {
         </button>
       </nav>
 
-      {activeTab === 'blocked' ? <BlockedSites /> : <FlowerDisplay />}
+      <div className="popup-content">
+        {activeTab === 'blocked' ? <BlockedSites /> : <FlowerDisplay />}
+      </div>
     </div>
   );
 }

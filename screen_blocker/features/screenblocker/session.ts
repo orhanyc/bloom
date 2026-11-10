@@ -1,4 +1,5 @@
 import type { Activity } from '../interactive_activity/storage';
+import { awardFlowerPoints } from '../flower_growth/storage';
 
 export type FocusSession = {
   id: string;
@@ -30,30 +31,46 @@ export async function startFocusSession(site: string, activity: Activity) {
     endsAt: startedAt + activity.minutes * 60_000,
     phase: 'focus',
   };
+
   await browser.storage.local.set({ [getSessionKey(site)]: session });
   return session;
 }
 
 export async function confirmFocusSession(site: string, session: FocusSession) {
   if ((await getFocusSession(site))?.id !== session.id) return;
+
   await browser.storage.local.set({
     [getSessionKey(site)]: { ...session, phase: 'confirm' },
   });
 }
 
-export async function finishFocusSession(site: string, session: FocusSession, completed: boolean) {
+export async function finishFocusSession(
+  site: string,
+  session: FocusSession,
+  completed: boolean,
+) {
   if ((await getFocusSession(site))?.id !== session.id) return false;
 
-  const next: Record<string, unknown> = { [getSessionKey(site)]: null };
+  const next: Record<string, unknown> = {
+    [getSessionKey(site)]: null,
+  };
+
   if (completed) {
     const key = `activityCompletion:${session.id}`;
     const existing = await browser.storage.local.get(key);
+
     if (!existing[key]) {
+      const earnedPoints = await awardFlowerPoints(
+        session.activity.minutes,
+        session.id,
+      );
+
       next[key] = {
         id: session.id,
         site,
         activity: session.activity,
         points: session.activity.points,
+        flowerPoints: earnedPoints,
         startedAt: session.startedAt,
         completedAt: Date.now(),
       };

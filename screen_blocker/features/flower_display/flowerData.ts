@@ -17,7 +17,7 @@ export const displayFlowers: DisplayFlower[] = [
     image: '/flower-progression/fully-grown.svg',
     position: { left: '20%', bottom: '68%' },
   },
-  {
+  /*{
     id: 'flower-2',
     name: 'Bloom 2',
     image: '/flower-progression/fully-grown.svg',
@@ -68,5 +68,5 @@ export const displayFlowers: DisplayFlower[] = [
     name: 'Bloom 9',
     image: '/flower-progression/fully-grown.svg',
     position: { left: '80%', bottom: '3%' },
-  },
+  },*/
 ];

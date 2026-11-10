@@ -1,3 +1,6 @@
+
+import { deductFlowerPoints } from '../flower_growth/storage';
+
 export const BYPASS_MINUTES = 5;
 
 type Bypasses = Record<string, number>;
@@ -7,18 +10,21 @@ export async function getBypassExpiry(site: string): Promise<number> {
   return (bypasses as Bypasses)[site] ?? 0;
 }
 
-//Unlocks the site temporarily and records the unblock
+// Unlocks the site temporarily and records the unblock.
 export async function startBypass(site: string): Promise<number> {
   const { bypasses = {}, bypassCount = 0 } = await browser.storage.local.get([
     'bypasses',
     'bypassCount',
   ]);
 
+  // Deduct up to 100 points from the active flower.
+  await deductFlowerPoints();
+
   const expiresAt = Date.now() + BYPASS_MINUTES * 60 * 1000;
 
   await browser.storage.local.set({
     bypasses: { ...(bypasses as Bypasses), [site]: expiresAt },
-    //Total number of times the user has chosen to continue
+    // Total number of times the user has chosen to continue.
     bypassCount: (bypassCount as number) + 1,
   });
 

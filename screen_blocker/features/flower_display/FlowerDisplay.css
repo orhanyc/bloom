@@ -83,3 +83,173 @@
   text-align: center;
 }
 
+/* Active flower section */
+.active-flower {
+  margin-top: 28px;
+  padding: 18px;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.active-flower h2 {
+  margin: 0 0 14px;
+  color: #1f4d3a;
+  font-size: 20px;
+}
+
+.active-flower-content {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.active-flower-image {
+  width: 110px;
+  height: 140px;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+.active-flower-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.active-flower-info h3 {
+  margin: 0 0 8px;
+  color: #1f4d3a;
+  font-size: 18px;
+}
+
+.wilted-message {
+  margin: 0 0 8px;
+  color: #a66b52;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.active-flower-points {
+  margin: 0 0 10px;
+  color: #657068;
+  font-size: 14px;
+}
+
+.flower-progress-track {
+  width: 100%;
+  height: 12px;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #e5e9e3;
+}
+
+.flower-progress-fill {
+  height: 100%;
+  border-radius: 10px;
+  background: #75a77c;
+  transition: width 0.3s ease;
+}
+
+.flower-progress-label {
+  margin: 6px 0 0;
+  color: #657068;
+  font-size: 12px;
+  text-align: right;
+}
+
+@media (max-width: 400px) {
+  .active-flower-content {
+    gap: 12px;
+  }
+
+  .active-flower-image {
+    width: 85px;
+    height: 115px;
+  }
+}
+
+/* Active flower section */
+.active-flower {
+  margin-top: 28px;
+  padding: 18px;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.active-flower h2 {
+  margin: 0 0 14px;
+  color: #1f4d3a;
+  font-size: 20px;
+}
+
+.active-flower-content {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.active-flower-image {
+  width: 110px;
+  height: 140px;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+.active-flower-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.active-flower-info h3 {
+  margin: 0 0 8px;
+  color: #1f4d3a;
+  font-size: 18px;
+}
+
+.wilted-message {
+  margin: 0 0 8px;
+  color: #a66b52;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.active-flower-points {
+  margin: 0 0 10px;
+  color: #657068;
+  font-size: 14px;
+}
+
+.flower-progress-track {
+  width: 100%;
+  height: 12px;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #e5e9e3;
+}
+
+.flower-progress-fill {
+  height: 100%;
+  border-radius: 10px;
+  background: #75a77c;
+  transition: width 0.3s ease;
+}
+
+.flower-progress-label {
+  margin: 6px 0 0;
+  color: #657068;
+  font-size: 12px;
+  text-align: right;
+}
+
+@media (max-width: 400px) {
+  .active-flower-content {
+    gap: 12px;
+  }
+
+  .active-flower-image {
+    width: 85px;
+    height: 115px;
+  }
+}
+

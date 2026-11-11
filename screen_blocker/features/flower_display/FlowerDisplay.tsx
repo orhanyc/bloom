@@ -103,7 +103,7 @@ function FlowerDisplay() {
             );
           })
         ) : (
-          <p className="empty-garden">
+          <p className="empty-garden" style={{ color: 'white' }}>
             Your display case is empty. Grow a flower to add it here!
           </p>
         )}

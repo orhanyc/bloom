@@ -7,10 +7,10 @@ export type Activity = {
 };
 
 export const DEFAULT_ACTIVITIES: Activity[] = [
-  { id: 'read', name: 'Read', minutes: 15, points: 2, icon: 'read' },
-  { id: 'walk', name: 'Walk', minutes: 10, points: 1, icon: 'walk' },
-  { id: 'stretch', name: 'Stretch', minutes: 5, points: 1, icon: 'stretch' },
-  { id: 'study', name: 'Study', minutes: 25, points: 3, icon: 'study' },
+  { id: 'read', name: 'Read', minutes: 15, points: 25, icon: 'read' },
+  { id: 'walk', name: 'Walk', minutes: 10, points: 17, icon: 'walk' },
+  { id: 'stretch', name: 'Stretch', minutes: 5, points: 8, icon: 'stretch' },
+  { id: 'study', name: 'Study', minutes: 25, points: 42, icon: 'study' },
 ];
 
 export async function getActivities(): Promise<Activity[]> {
